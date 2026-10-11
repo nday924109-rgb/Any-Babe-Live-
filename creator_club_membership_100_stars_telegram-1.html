@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Creator Club — Demo App</title>
+<style>
+:root{--bg:#100b05;--panel:#19140e;--gold:#f6d35d;--muted:#b9afa0;--line:#393026}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#33210a 0,#100b05 45%,#080706 100%);color:#fff;font-family:Arial,Helvetica,sans-serif}
+.wrap{max-width:720px;margin:auto;padding:16px 14px 36px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 4px 18px}
+.brand{font-weight:800;letter-spacing:.3px;font-size:20px}.pill{border:1px solid #51452f;border-radius:30px;padding:8px 12px;color:var(--gold);font-size:12px}
+.hero{border:1px solid #655846;border-radius:22px;overflow:hidden;background:#201b16;position:relative;min-height:280px;display:grid;place-items:center}
+.media{width:100%;height:320px;object-fit:cover;display:block;background:linear-gradient(140deg,#443729,#17120d)}
+.live{position:absolute;top:14px;left:14px;background:#100d0aeb;border:1px solid #554736;border-radius:24px;padding:8px 13px;font-weight:800;letter-spacing:1px}
+.live i{display:inline-block;width:8px;height:8px;background:#f04444;border-radius:50%;margin-right:6px}
+.timer{position:absolute;top:14px;left:50%;transform:translateX(-50%);background:#100d0ae8;border-radius:9px;padding:8px 12px;font-family:monospace}
+.upload-note{position:absolute;bottom:12px;left:12px;right:12px;text-align:center;background:#090806c9;border-radius:10px;padding:9px;font-size:12px;color:#e8ddcc}
+h1{font-size:22px;margin:20px 2px 8px}.sub{color:#d3c8b7;margin:0 2px 16px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.stat{border:1px solid var(--line);background:#21190f;border-radius:16px;text-align:center;padding:13px 5px}.num{font-weight:800;font-size:19px;color:#fff}.label{font-size:11px;color:var(--muted);margin-top:5px}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:24px 2px 12px;font-weight:800;letter-spacing:1px}
+.small{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{border:1px solid #514330;border-radius:16px;overflow:hidden;background:#1c160f;min-width:0}
+.card-media{width:100%;height:220px;object-fit:cover;background:linear-gradient(145deg,#443729,#15100a);display:block}
+.card-body{padding:10px}.card-title{font-weight:700;font-size:14px}.card-time{font-size:12px;color:var(--muted);margin-top:5px}
+.uploads{border:1px solid var(--line);border-radius:18px;background:#17120d;padding:14px;margin-top:20px}
+.uploads h2{font-size:16px;margin:0 0 6px}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 12px}
+label.file{display:block;border:1px dashed #85704a;border-radius:12px;padding:13px;text-align:center;color:var(--gold);font-weight:700;margin-top:9px;cursor:pointer}
+input[type=file]{display:none}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.feature{border:1px solid var(--line);border-radius:16px;padding:15px;background:#21180d}.feature strong{display:block;color:var(--gold);margin-bottom:7px}.feature span{font-size:13px;color:#d7caba;line-height:1.4}
+.join{margin-top:20px;padding:18px 14px;border:1px solid #5a4b32;border-radius:20px;background:linear-gradient(100deg,#17130e,#090807);display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;color:#fff;box-shadow:0 8px 28px #0007}
+.join-title{text-align:center;font-size:17px;line-height:1.3;font-weight:900}.price{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:8px}.price b{font-size:25px;color:var(--gold)}.price del{color:#8f877c;font-size:14px}.stars{font-size:12px;background:#e54d4d;color:#fff;padding:4px 7px;border-radius:6px;font-weight:800}
+.arrow{background:var(--gold);color:#211800;border-radius:50%;width:54px;height:54px;display:grid;place-items:center;font-size:28px;flex-shrink:0}
+.pay{text-align:center;color:#a99f90;font-size:12px;margin:15px 0}.footer{text-align:center;color:#8e8475;font-size:11px;margin-top:18px;line-height:1.5}
+button{border:0;border-radius:10px;background:var(--gold);color:#211800;font-weight:800;padding:11px 13px;cursor:pointer;width:100%;margin-top:10px}
+
+.chatbox{margin-top:18px;border:1px solid var(--line);border-radius:18px;background:#17120d;padding:14px}
+.chathead{display:flex;align-items:center;justify-content:space-between;font-weight:800;letter-spacing:1px;margin-bottom:12px}
+.online{font-size:12px;color:#3bd59a;letter-spacing:0}
+.messages{height:180px;overflow:auto;display:flex;flex-direction:column;gap:9px;padding:4px 2px 10px}
+.msg{background:#282117;border:1px solid #3c3021;border-radius:12px;padding:8px 10px;font-size:13px;color:#e9dfd0;max-width:95%;overflow-wrap:anywhere}
+.msg b{color:var(--gold);margin-right:6px}
+.chatrow{display:flex;gap:8px;margin-top:8px}
+.chatrow input{flex:1;min-width:0;background:#090806;color:#fff;border:1px solid #403426;border-radius:10px;padding:12px}
+.chatrow button{width:auto;margin:0;white-space:nowrap}
+.modalback{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
+.modal{width:100%;max-width:400px;background:#17120d;border:1px solid #75613d;border-radius:22px;padding:22px;box-shadow:0 15px 60px #000c}
+.modal h2{margin:0 0 8px;font-size:21px}.modal p{color:#c9bdac;font-size:14px;line-height:1.5}
+.starprice{font-size:28px;color:var(--gold);font-weight:900;text-align:center;margin:18px 0}
+.modal .secondary{background:#30271b;color:#fff;border:1px solid #51422c}
+.paypulse{animation:pulseGlow 1.2s infinite;box-shadow:0 0 0 0 #f6d35d66}
+@keyframes pulseGlow{0%{box-shadow:0 0 0 0 #f6d35d66;transform:scale(1)}70%{box-shadow:0 0 0 9px #f6d35d00;transform:scale(1.015)}100%{box-shadow:0 0 0 0 #f6d35d00;transform:scale(1)}}
+@media(max-width:420px){.media{height:275px}.card-media{height:190px}.brand{font-size:18px}.num{font-size:17px}.join-title{font-size:15px}.arrow{width:46px;height:46px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><div class="brand">✦ CREATOR CLUB</div><div class="pill">PRIVATE COMMUNITY</div></header>
+  <section class="hero">
+    <video id="heroVideo" class="media" controls playsinline style="display:none"></video>
+    <img id="heroImage" class="media" alt="Your main preview" src="" style="display:none">
+    <div id="heroPlaceholder" style="text-align:center;padding:30px;color:#d9c7a8">
+      <div style="font-size:52px">▶</div><strong>Your Video / Photo Preview</strong><div style="font-size:12px;margin-top:8px">Neeche se apni media add karein</div>
+    </div>
+    <div class="live"><i></i>LIVE</div><div class="timer">00:35:13</div>
+    <div class="upload-note">Demo design · Live broadcast abhi connected nahi hai</div>
+  </section>
+  <h1>Fashion Creator Club</h1>
+  <p class="sub">Exclusive fashion videos · Styling tips · Creator community</p>
+  <section class="stats">
+    <div class="stat"><div class="num">8,899</div><div class="label">JOINED</div></div>
+    <div class="stat"><div class="num" id="viewerCount">7,890</div><div class="label">SIMULATED VIEWERS*</div></div>
+    <div class="stat"><div class="num">8,497</div><div class="label">LIKES</div></div>
+  </section>
+  <section class="chatbox">
+    <div class="chathead"><span>LIVE CHAT <span style="color:#f04444">●</span></span><span class="online" id="chatOnline">● Demo simulation</span></div>
+    <div class="messages" id="messages" aria-live="polite">
+      <div class="msg"><b>StyleFan23</b> New styling video kab aayega?</div>
+      <div class="msg"><b>CreatorClub</b> Welcome! Apne fashion questions share karein.</div>
+      <div class="msg"><b>FashionLover</b> Outfit ideas ka preview accha hai ✨</div>
+    </div>
+    <div class="chatrow"><input id="chatInput" maxlength="180" placeholder="Chat message likhein..." aria-label="Chat message"><button id="sendChat" type="button">Send</button></div>
+    <p class="hint" style="margin:9px 0 0">Demo chat: sample messages automatic aayenge aur aapka message isi device par dikhega. Real multi-user chat ke liye backend chahiye.</p>
+  </section>
+  <div class="section-head"><span>▶ PREVIEWS</span><span class="small">PRIVATE GROUP · HD</span></div>
+  <section class="grid" id="previewGrid">
+    <article class="card"><div class="card-media" style="display:grid;place-items:center;color:#d5c09a;font-size:42px">＋</div><div class="card-body"><div class="card-title">Your Video 01</div><div class="card-time">Add your own media</div></div></article>
+    <article class="card"><div class="card-media" style="display:grid;place-items:center;color:#d5c09a;font-size:42px">＋</div><div class="card-body"><div class="card-title">Your Video 02</div><div class="card-time">Add your own media</div></div></article>
+  </section>
+  <section class="uploads">
+    <h2>Apni photo aur video add karein</h2>
+    <p class="hint">Ye demo aapke phone par select ki hui media ka preview dikhata hai. Media website par upload/publish nahi hoti.</p>
+    <label class="file" for="heroUpload">＋ Main preview photo/video chunein</label>
+    <input id="heroUpload" type="file" accept="image/*,video/*">
+    <label class="file" for="galleryUpload">＋ Preview gallery ke liye photos/videos chunein</label>
+    <input id="galleryUpload" type="file" accept="image/*,video/*" multiple>
+    <button id="clearMedia" type="button">Preview media clear karein</button>
+  </section>
+  <section class="features">
+    <div class="feature"><strong>▣ PRIVATE COMMUNITY</strong><span>Members-only fashion content and styling ideas.</span></div>
+    <div class="feature"><strong>◷ DAILY UPDATES</strong><span>New previews and creator tips added by you.</span></div>
+  </section>
+  <a class="join paypulse" id="joinButton" href="https://t.me/+CmToeSIxyRszNmY1" target="_blank" rel="noopener">
+    <div style="flex:1"><div class="join-title">JOIN PRIVATE<br>TELEGRAM GROUP</div><div class="price"><del>₹899</del><b>100 ★</b><span class="stars">100 ★</span></div></div><div class="arrow">→</div>
+  </a>
+  <p class="pay">UPI · PhonePe · Google Pay · Paytm</p>
+  <div class="footer">*Viewer count aur sample chat demo simulation hain, real users/live analytics nahi.<br>Demo prototype only — checkout aur automatic Telegram access are not connected.</div>
+</div>
+<div class="modalback" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+  <div class="modal">
+    <h2 id="payTitle">Join Private Telegram Group</h2>
+    <p>Membership payment option</p>
+    <div class="starprice">100 ★ Stars</div>
+    <p>Payment button neeche diya gaya hai. Is demo mein Telegram Stars ya asli payment gateway connect nahi hai, isliye abhi koi charge nahi hoga.</p>
+    <button id="payNow" type="button">Pay 100 Stars</button>
+    <button id="closePay" type="button" class="secondary">Cancel</button>
+  </div>
+</div>
+<script>
+const heroUpload=document.getElementById('heroUpload');
+const galleryUpload=document.getElementById('galleryUpload');
+const heroImage=document.getElementById('heroImage');
+const heroVideo=document.getElementById('heroVideo');
+const placeholder=document.getElementById('heroPlaceholder');
+let urls=[];
+function makeUrl(file){const u=URL.createObjectURL(file);urls.push(u);return u}
+function showHero(file){
+  heroImage.style.display='none';heroVideo.style.display='none';heroImage.removeAttribute('src');heroVideo.pause();heroVideo.removeAttribute('src');
+  const u=makeUrl(file);
+  if(file.type.startsWith('video/')){heroVideo.src=u;heroVideo.style.display='block'}
+  else{heroImage.src=u;heroImage.style.display='block'}
+  placeholder.style.display='none';
+}
+heroUpload.addEventListener('change',e=>{if(e.target.files[0])showHero(e.target.files[0])});
+galleryUpload.addEventListener('change',e=>{
+ const grid=document.getElementById('previewGrid');grid.innerHTML='';
+ [...e.target.files].forEach((file,i)=>{
+  const card=document.createElement('article');card.className='card';
+  const u=makeUrl(file);let media;
+  if(file.type.startsWith('video/')){media=document.createElement('video');media.controls=true;media.playsInline=true}
+  else{media=document.createElement('img');media.alt='Your uploaded preview'}
+  media.src=u;media.className='card-media';media.style.objectFit='cover';
+  const body=document.createElement('div');body.className='card-body';
+  const title=document.createElement('div');title.className='card-title';title.textContent=file.name;
+  const time=document.createElement('div');time.className='card-time';time.textContent='Your preview';
+  body.append(title,time);card.append(media,body);grid.append(card);
+ });
+});
+document.getElementById('clearMedia').addEventListener('click',()=>{
+ urls.forEach(u=>URL.revokeObjectURL(u));urls=[];
+ heroImage.style.display='none';heroVideo.pause();heroVideo.style.display='none';heroImage.removeAttribute('src');heroVideo.removeAttribute('src');placeholder.style.display='block';
+ heroUpload.value='';galleryUpload.value='';
+ document.getElementById('previewGrid').innerHTML='<article class="card"><div class="card-media" style="display:grid;place-items:center;color:#d5c09a;font-size:42px">＋</div><div class="card-body"><div class="card-title">Your Video 01</div><div class="card-time">Add your own media</div></div></article><article class="card"><div class="card-media" style="display:grid;place-items:center;color:#d5c09a;font-size:42px">＋</div><div class="card-body"><div class="card-title">Your Video 02</div><div class="card-time">Add your own media</div></div></article>';
+});
+const payModal=document.getElementById('payModal');
+document.getElementById('joinButton').addEventListener('click',e=>{e.preventDefault();payModal.style.display='flex';});
+document.getElementById('closePay').addEventListener('click',()=>payModal.style.display='none');
+payModal.addEventListener('click',e=>{if(e.target===payModal)payModal.style.display='none';});
+document.getElementById('payNow').addEventListener('click',()=>{alert('Payment abhi connect nahi hai. Real payment ke liye Telegram Stars invoice/bot integration ya approved payment gateway set karna hoga. Is demo mein paisa charge nahi hoga.');});
+const messages=document.getElementById('messages');
+document.getElementById('sendChat').addEventListener('click',()=>{
+ const input=document.getElementById('chatInput');const value=input.value.trim();if(!value)return;
+ const item=document.createElement('div');item.className='msg';
+ const name=document.createElement('b');name.textContent='You';
+ item.append(name,document.createTextNode(value));messages.append(item);messages.scrollTop=messages.scrollHeight;input.value='';
+});
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('sendChat').click();});
+// Demo-only counter animation. These are not real viewers and do not represent actual traffic.
+let demoViewers=7890;
+setInterval(()=>{
+  demoViewers += Math.floor(Math.random()*7)+1;
+  document.getElementById('viewerCount').textContent=demoViewers.toLocaleString('en-US');
+}, 2600);
+// Demo-only sample chat activity; label every generated message as a simulation.
+const sampleChat=[
+ ['DemoUser12','New styling tips kab aayenge?'],
+ ['DemoFashion','Nice preview ✨'],
+ ['DemoMember','Next outfit idea share karein!'],
+ ['DemoCreator','Welcome to the demo chat.'],
+ ['DemoStyleFan','Casual look ke tips chahiye.']
+];
+let sampleIndex=0;
+setInterval(()=>{
+  const [username,message]=sampleChat[sampleIndex%sampleChat.length];sampleIndex++;
+  const item=document.createElement('div');item.className='msg';
+  const name=document.createElement('b');name.textContent=username+' · DEMO';
+  item.append(name,document.createTextNode(message));messages.append(item);
+  while(messages.children.length>20)messages.removeChild(messages.firstChild);
+  messages.scrollTop=messages.scrollHeight;
+}, 6500);
+let seconds=35*60+13;
+setInterval(()=>{seconds++;const h=String(Math.floor(seconds/3600)).padStart(2,'0');const m=String(Math.floor((seconds%3600)/60)).padStart(2,'0');const s=String(seconds%60).padStart(2,'0');document.querySelector('.timer').textContent=h+':'+m+':'+s;},1000);
+</script>
+</body>
+</html>
